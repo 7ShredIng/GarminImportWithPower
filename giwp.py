@@ -6,9 +6,10 @@ assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 GarminDeviceFolder = "/media/sick/GARMIN/GARMIN/ACTIVITY"
 ImportDir = "/media/sick/Training/FenixImport/tcx"
 VirtualPowerDir = "/media/sick/Training/FenixImport/vpower"
+FitToTcxDir = "~/FIT-to-TCX/batch.sh"
 
 print("-- check if directories are available")
-#assert (os.path.isdir(GarminDeviceFolder)),"ERROR: dir does not exist"
+assert (os.path.isdir(GarminDeviceFolder)),"ERROR: dir does not exist"
 assert (os.path.isdir(ImportDir)),"ERROR: dir does not exist"
 assert (os.path.isdir(VirtualPowerDir)),"ERROR: dir does not exist"
 
@@ -17,6 +18,9 @@ importCommand = '/usr/bin/rsync --progress -r -v -s %s %s' % (GarminDeviceFolder
 p = subprocess.Popen(importCommand, shell=True).wait()
 
 print("-- convert fit files to tcx")
+convertFitToTcxCommand = '%s %s/*.FIT' % (FitToTcxDir, ImportDir)
+print(convertFitToTcxCommand)
+p = subprocess.Popen(convertFitToTcxCommand, shell=True).wait()
 
 print("-- calculate and add virtual power to tcx files")
 
