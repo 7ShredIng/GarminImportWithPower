@@ -1,11 +1,11 @@
-* Dependencies
+# Dependencies
 - FIT-to-TCX
-
 - tcx-vpower
 
-(- gnu parallels)
+## todo
+Use gnu parallels for parallel processing.
 
-* Configuration
+# Configuration
 In the .config file define the folders for processing the tcx files and the location of the used batch processing scripts.
 
 [Folders]
