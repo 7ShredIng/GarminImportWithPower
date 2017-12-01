@@ -19,7 +19,7 @@ Use gnu parallels for parallel processing.
 
 # Configuration
 In the .config file define the folders for processing the tcx files and the location of the used batch processing scripts.
-
+<pre>
 [Folders]
 GarminDevActivities: ""
 ImportDir: ""
@@ -28,3 +28,4 @@ ExportDir: ""
 [Scripts]
 FitToTcx: ""
 TcxVPower: ""
+</pre>
