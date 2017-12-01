@@ -17,11 +17,6 @@ def config():
     FitToTcx            = ConfigSectionMap("Scripts")['FitToTcx']
     TcxVPower           = ConfigSectionMap("Scripts")['TcxVPower']
 
-#GarminDeviceFolder = "/media/sick/GARMIN/GARMIN/ACTIVITY/"
-#ImportDir = "/home/sick/Training/FenixImport/tcx/"
-#VirtualPowerDir = "/home/sick/Training/FenixImport/vpower/"
-#FitToTcx = "/home/sick/Apps/FIT-to-TCX/batch.sh"
-#TcxVPower = "/home/sick/Apps/tcx_vpower_0_3/batch.sh"
 
 def checkPaths():
     print("-- check if directories are available")
