@@ -17,7 +17,6 @@ def config():
     FitToTcx            = ConfigSectionMap("Scripts")['FitToTcx']
     TcxVPower           = ConfigSectionMap("Scripts")['TcxVPower']
 
-
 def checkPaths():
     print("-- check if directories are available")
     assert (os.path.isdir(GarminDeviceFolder)),"ERROR: dir does not exist"
