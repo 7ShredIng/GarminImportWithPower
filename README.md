@@ -1,3 +1,6 @@
+# GIWP
+Sync FIT files from a Garmin device (e.g. Garmin Fenix), convert them to TCX files and add a calculated virtual power. These can be imported for further analysis in other tools e.g. Golden Cheetah.
+
 # Dependencies
 ## FIT-to-TCX
 ### Dependencies
