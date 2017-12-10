@@ -2,6 +2,7 @@ import sys, os
 import subprocess 
 import glob
 import yaml 
+from bunch import bunchify
 
 assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 
@@ -20,12 +21,14 @@ assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 def readConfig():
     with open('.config') as conf:
         configuration = yaml.safe_load(conf)
-    print(configuration)
-    GarminDeviceFolder  = configuration.Folders.GarminDevActivities
-    #ImportDir           = ConfigSectionMap("Folders")['ImportDir']
-    #VirtualPowerDir     = ConfigSectionMap("Folders")['ExportDir']
-    #FitToTcx            = ConfigSectionMap("Scripts")['FitToTcx']
-    #TcxVPower           = ConfigSectionMap("Scripts")['TcxVPower']
+    
+    b = bunchify(configuration)
+    GarminDeviceFolder  = b.Folders.GarminDevActivities
+    ImportDir           = b.Folders.ImportDir
+    VirtualPowerDir     = b.Folders.ExportDir
+    FitToTcx            = b.Scripts.FitToTcx
+    TcxVPower           = b.Scripts.TcxVPower
+    conf.close()
 
 def checkPaths():
     print("-- check if directories are available")
