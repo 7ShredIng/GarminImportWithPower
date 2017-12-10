@@ -7,15 +7,6 @@ from bunch import bunchify
 assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 
 #os.system('mount -L GARMIN /mnt/GarminFenix3')
-#class Configuration(yaml.YAMLObject):
-#    yaml_tag = '!Folders'
-#
-#    def __init__(self, name):
-#        self.GarminDevActivities = GarminDevActivities
-#        self.ImportDir = ImportDir
-#        self.ExportDir = ExportDir
-#        self.FitToTcx = FitToTcx
-#        self.TcxPower= TcxPower
 
 ## Read configuration
 def readConfig():
