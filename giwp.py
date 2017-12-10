@@ -1,21 +1,31 @@
 import sys, os
 import subprocess 
 import glob
-import ConfigParser
+import yaml 
 
 assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 
 #os.system('mount -L GARMIN /mnt/GarminFenix3')
+#class Configuration(yaml.YAMLObject):
+#    yaml_tag = '!Folders'
+#
+#    def __init__(self, name):
+#        self.GarminDevActivities = GarminDevActivities
+#        self.ImportDir = ImportDir
+#        self.ExportDir = ExportDir
+#        self.FitToTcx = FitToTcx
+#        self.TcxPower= TcxPower
 
 ## Read configuration
-def config():
-    config = ConfigParser.ConfigParser()
-    config.read(".config")
-    GarminDeviceFolder  = ConfigSectionMap("Folders")['GarminDevActivities']
-    ImportDir           = ConfigSectionMap("Folders")['ImportDir']
-    VirtualPowerDir     = ConfigSectionMap("Folders")['ExportDir']
-    FitToTcx            = ConfigSectionMap("Scripts")['FitToTcx']
-    TcxVPower           = ConfigSectionMap("Scripts")['TcxVPower']
+def readConfig():
+    with open('.config') as conf:
+        configuration = yaml.safe_load(conf)
+    print(configuration)
+    GarminDeviceFolder  = configuration.Folders.GarminDevActivities
+    #ImportDir           = ConfigSectionMap("Folders")['ImportDir']
+    #VirtualPowerDir     = ConfigSectionMap("Folders")['ExportDir']
+    #FitToTcx            = ConfigSectionMap("Scripts")['FitToTcx']
+    #TcxVPower           = ConfigSectionMap("Scripts")['TcxVPower']
 
 def checkPaths():
     print("-- check if directories are available")
@@ -48,21 +58,8 @@ def exportVPowerFiles():
     print('%s' % exportGCFolderCommand)
     p = subprocess.Popen(exportGCFolderCommand, shell=True).wait()
 
-def ConfigSectionMap(section):
-    dict1 = {}
-    options = Config.options(section)
-    for option in options:
-        try:
-            dict1[option] = Config.get(section, option)
-            if dict1[option] == -1:
-                DebugPrint("skip: %s" % option)
-        except:
-            print("exception on %s!" % option)
-            dict1[option] = None
-    return dict1
-
 def main():
-    config()
+    readConfig()
     checkPaths()
     importFitFiles()
     convertFitToTcx()
