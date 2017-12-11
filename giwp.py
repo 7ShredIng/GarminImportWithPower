@@ -8,7 +8,14 @@ assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 
 #os.system('mount -L GARMIN /mnt/GarminFenix3')
 
-## Read configuration
+## Read configuration from yaml.
+## [Folders]
+## - path to Garmin device where the FIT files are located
+## - Import directory to where the files are processed
+## - Export directory to where copy the virtual power files
+## [Scripts]
+## - batch script: fit to tcx conversion
+## - batch script: vpower conversion
 def readConfig():
     with open('.config') as conf:
         configuration = yaml.safe_load(conf)
