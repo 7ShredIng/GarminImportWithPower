@@ -62,10 +62,11 @@ class GIWP:
     def exportVPowerFiles(self):
         print("-- sync vpower files to Golden Cheetah import directory")
         exportGCFolderCommand = '/usr/bin/rsync --progress -rvsh --include=\'vpower_*\' --include=\'*/\' --exclude=\'*\' %s %s' % (GIWP.ImportDir, GIWP.VirtualPowerDir)
-        for f in glob.glob(GIWP.ImportDir + "vpower*.tcx"):
-            os.remove(f)
         print('%s' % exportGCFolderCommand)
         p = subprocess.Popen(exportGCFolderCommand, shell=True).wait()
+        print("-- delete calculated vpower files from tcx folder")
+        for f in glob.glob(GIWP.ImportDir + "vpower*.tcx"):
+            os.remove(f)
 
 def main():
     giwp = GIWP()
