@@ -64,8 +64,14 @@ class GIWP:
         exportGCFolderCommand = '/usr/bin/rsync --progress -rvsh --include=\'vpower_*\' --include=\'*/\' --exclude=\'*\' %s %s' % (GIWP.ImportDir, GIWP.VirtualPowerDir)
         print('%s' % exportGCFolderCommand)
         p = subprocess.Popen(exportGCFolderCommand, shell=True).wait()
-        print("-- delete calculated vpower files from tcx folder")
+
+    def cleanup(self):
+        print("-- delete unused files from tcx folder")
         for f in glob.glob(GIWP.ImportDir + "vpower*.tcx"):
+            print(f)
+            os.remove(f)
+        for f in glob.glob(GIWP.ImportDir + "*.FIT.tcx"):
+            print(f)
             os.remove(f)
 
 def main():
@@ -76,6 +82,7 @@ def main():
     giwp.convertFitToTcx()
     giwp.calculateVirtualPower()
     giwp.exportVPowerFiles()
+    giwp.cleanup()
 
 if __name__ == "__main__":
     main()
