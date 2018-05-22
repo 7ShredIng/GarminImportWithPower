@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, datetime
 import subprocess 
 import glob
 import yaml 
@@ -7,7 +7,7 @@ from bunch import bunchify
 assert (sys.version_info.major < 3),"ERROR: currently python2.7 only!"
 
 class GIWP:
-
+    ArchiveDir = ""
     GarminDeviceFolder = ""
     ImportDir = ""
     VirtualPowerDir = ""
@@ -29,6 +29,7 @@ class GIWP:
             configuration = yaml.safe_load(conf)
         
         b = bunchify(configuration)
+        GIWP.ArchiveDir          = b.Folders.ArchiveFolder
         GIWP.GarminDeviceFolder  = b.Folders.GarminDevActivities
         GIWP.ImportDir           = b.Folders.ImportDir
         GIWP.VirtualPowerDir     = b.Folders.ExportDir
@@ -38,9 +39,18 @@ class GIWP:
 
     def checkPaths(self):
         print("-- check if directories are available")
+        print(GIWP.ArchiveDir)
+        assert (os.path.isdir(GIWP.ArchiveDir)),"ERROR: dir does not exist"
         assert (os.path.isdir(GIWP.GarminDeviceFolder)),"ERROR: dir does not exist"
         assert (os.path.isdir(GIWP.ImportDir)),"ERROR: dir does not exist"
         assert (os.path.isdir(GIWP.VirtualPowerDir)),"ERROR: dir does not exist"
+
+    def archiveFit(self):
+        print("-- archive fit files")
+        archiveDirDate = os.path.join(GIWP.ArchiveDir, datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        os.makedirs(archiveDirDate)
+        archiveCommand = '/usr/bin/rsync --progress -rvsh --ignore-existing %s %s' % (GIWP.GarminDeviceFolder, archiveDirDate)
+        p = subprocess.Popen(archiveCommand, shell=True).wait()
 
     def importFitFiles(self):
         print("-- sync fit files to ImportDir")
@@ -61,15 +71,12 @@ class GIWP:
 
     def exportVPowerFiles(self):
         print("-- sync vpower files to Golden Cheetah import directory")
-        exportGCFolderCommand = '/usr/bin/rsync --progress -rvsh --include=\'vpower_*\' --include=\'*/\' --exclude=\'*\' %s %s' % (GIWP.ImportDir, GIWP.VirtualPowerDir)
+        exportGCFolderCommand = '/usr/bin/rsync --progress -rvsh --remove-source-files --include=\'vpower_*\' --include=\'*/\' --exclude=\'*\' %s %s' % (GIWP.ImportDir, GIWP.VirtualPowerDir)
         print('%s' % exportGCFolderCommand)
         p = subprocess.Popen(exportGCFolderCommand, shell=True).wait()
 
     def cleanup(self):
         print("-- delete unused files from tcx folder")
-        for f in glob.glob(GIWP.ImportDir + "vpower*.tcx"):
-            print(f)
-            os.remove(f)
         for f in glob.glob(GIWP.ImportDir + "*.FIT.tcx"):
             print(f)
             os.remove(f)
@@ -78,6 +85,7 @@ def main():
     giwp = GIWP()
     giwp.readConfig()
     giwp.checkPaths()
+    giwp.archiveFit()
     giwp.importFitFiles()
     giwp.convertFitToTcx()
     giwp.calculateVirtualPower()
