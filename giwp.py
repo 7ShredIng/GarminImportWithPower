@@ -44,7 +44,7 @@ class GIWP:
 
     def importFitFiles(self):
         print("-- sync fit files to ImportDir")
-        importCommand = '/usr/bin/rsync --progress -rvsh --ignore-existing %s %s' % (GIWP.GarminDeviceFolder, GIWP.ImportDir)
+        importCommand = '/usr/bin/rsync --progress -rvsh --ignore-existing --remove-source-files %s %s' % (GIWP.GarminDeviceFolder, GIWP.ImportDir)
         p = subprocess.Popen(importCommand, shell=True).wait()
 
     def convertFitToTcx(self):
