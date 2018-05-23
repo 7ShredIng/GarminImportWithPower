@@ -77,7 +77,10 @@ class GIWP:
 
     def cleanup(self):
         print("-- delete unused files from tcx folder")
-        for f in glob.glob(GIWP.ImportDir + "*.FIT.tcx"):
+        for f in glob.glob(GIWP.ImportDir + "*.tcx"):
+            print(f)
+            os.remove(f)
+        for f in glob.glob(GIWP.ImportDir + "*.FIT"):
             print(f)
             os.remove(f)
 
